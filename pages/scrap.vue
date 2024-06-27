@@ -1,10 +1,10 @@
 <template>
-  <div class="w-full max-h-full text-slate-700 bg-slate-100">
-    <div class="flex w-full h-full ">
+  <div class="w-full max-h-full text-slate-700">
+    <div class="flex w-full h-full bg-slate-50">
       <div class="flex w-full justify-between items-center p-5 border-b">
         <div class="text-[25px] font-semibold">Scraping Datas</div>
         <button
-          @click="add = true"
+          @click="openAddscraper()"
           class="bg-blue-500 px-5 py-3 rounded-[6px] hover:scale-110 focus:scale-95 text-white"
         >
           Add
@@ -52,12 +52,19 @@
       </div>
     </div>
     <div class="w-full h-full grid grid-cols-3 gap-8 pt-5 px-4">
-      <div class="flex flex-col border-b border-x rounded-[12px]">
-        <iframe src="https://www.hackerrank.com/" class="h-[300px]"></iframe>
+      <div
+        class="flex flex-col border-b border-x rounded-[12px]"
+        v-for="(webscrap, index) in webscraps"
+        :key="index"
+      >
+        <iframe :src="webscrap.url" class="h-[300px]"></iframe>
         <div class="flex justify-between px-3 items-center">
-          <div class="text-[18px] overflow-hidden whitespace-nowrap">url : https://www.hackerrank.com/gfffhbfvdfgfdvfdfxddfbvd</div>
+          <div class="text-[18px] overflow-hidden whitespace-nowrap">
+            url : {{ webscrap.url }}
+          </div>
           <div class="flex flex-row gap-3 pt-2">
             <div
+              @click="openUpdate(webscrap)"
               class="flex flex-col cursor-pointer hover:bg-blue-500 px-3 py-1 rounded-[6px]"
             >
               <img src="/images/editicon.png" class="w-[25px] h-[25px]" />
@@ -65,94 +72,7 @@
             </div>
             <div>
               <div
-                class="flex flex-col items-center rounded-[6px] cursor-pointer hover:bg-red-500 py-1 px-2"
-              >
-                <img src="/images/trash.png" class="w-[25px] h-[25px]" />
-                <div>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col border-b border-x rounded-[12px]">
-        <iframe src="https://www.hackerrank.com/" class="h-[300px]"></iframe>
-        <div class="flex justify-between px-3 items-center">
-          <div class="text-[18px]">url : https://www.hackerrank.com/</div>
-          <div class="flex flex-row gap-3 pt-2">
-            <div
-              class="flex flex-col cursor-pointer hover:bg-blue-500 px-3 py-1 rounded-[6px]"
-            >
-              <img src="/images/editicon.png" class="w-[25px] h-[25px]" />
-              <div>Edit</div>
-            </div>
-            <div>
-              <div
-                class="flex flex-col items-center rounded-[6px] cursor-pointer hover:bg-red-500 py-1 px-2"
-              >
-                <img src="/images/trash.png" class="w-[25px] h-[25px]" />
-                <div>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col border-b border-x rounded-[12px]">
-        <iframe src="https://www.hackerrank.com/" class="h-[300px]"></iframe>
-        <div class="flex justify-between px-3 items-center">
-          <div class="text-[18px]">url : https://www.hackerrank.com/</div>
-          <div class="flex flex-row gap-3 pt-2">
-            <div
-              class="flex flex-col cursor-pointer hover:bg-blue-500 px-3 py-1 rounded-[6px]"
-            >
-              <img src="/images/editicon.png" class="w-[25px] h-[25px]" />
-              <div>Edit</div>
-            </div>
-            <div>
-              <div
-                class="flex flex-col items-center rounded-[6px] cursor-pointer hover:bg-red-500 py-1 px-2"
-              >
-                <img src="/images/trash.png" class="w-[25px] h-[25px]" />
-                <div>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col border-b border-x rounded-[12px]">
-        <iframe src="https://www.hackerrank.com/" class="h-[300px]"></iframe>
-        <div class="flex justify-between px-3 items-center">
-          <div class="text-[18px]">url : https://www.hackerrank.com/</div>
-          <div class="flex flex-row gap-3 pt-2">
-            <div @click="updateScrap()"
-              class="flex flex-col cursor-pointer hover:bg-blue-500 px-3 py-1 rounded-[6px]"
-            >
-              <img src="/images/editicon.png" class="w-[25px] h-[25px]" />
-              <div>Edit</div>
-            </div>
-            <div>
-              <div
-                class="flex flex-col items-center rounded-[6px] cursor-pointer hover:bg-red-500 py-1 px-2"
-              >
-                <img src="/images/trash.png" class="w-[25px] h-[25px]" />
-                <div>Delete</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-col border-b border-x rounded-[12px]">
-        <iframe src="https://www.hackerrank.com/" class="h-[300px]"></iframe>
-        <div class="flex justify-between px-3 items-center">
-          <div class="text-[18px]">url : https://www.hackerrank.com/</div>
-          <div class="flex flex-row gap-3 pt-2">
-            <div
-              class="flex flex-col cursor-pointer hover:bg-blue-500 px-3 py-1 rounded-[6px]"
-            >
-              <img src="/images/editicon.png" class="w-[25px] h-[25px]" />
-              <div>Edit</div>
-            </div>
-            <div>
-              <div
+                @click="deleteWebScraper(webscrap)"
                 class="flex flex-col items-center rounded-[6px] cursor-pointer hover:bg-red-500 py-1 px-2"
               >
                 <img src="/images/trash.png" class="w-[25px] h-[25px]" />
@@ -173,9 +93,29 @@ export default {
       scraper: {
         url: "",
       },
+      webscraps: [
+        {
+          url: "https://www.hackerrank.com/",
+        },
+        {
+          url: "https://www.hackerrank.com/",
+        },
+        {
+          url: "https://www.hackerrank.com/",
+        },
+      ],
     };
   },
+  mounted() {
+    this.webScraps();
+  },
   methods: {
+    async webScraps() {
+      const data = await this.$http.$get(`http://localhost:5001/scraper/get`);
+      if (data.success) {
+        this.webscraps = data.data;
+      }
+    },
     async createScrap() {
       const Details = await this.$http.$post(
         `http://localhost:5001/scraper/submit`,
@@ -187,9 +127,33 @@ export default {
       );
       this.add = false;
     },
-    // async updateScrap(){
-    //   const update=await this.$http.$put()
-    // }
+    openAddscraper() {
+      this.scraper = {
+        url: "",
+      };
+      this.add = true;
+    },
+    openUpdate(item) {
+      this.scraper = item;
+      this.add = true;
+    },
+    deleteWebScraper(item) {
+      this.scraper = item;
+      this.scraper.status = "deleted";
+      this.updateScrap();
+    },
+    async updateScrap() {
+      const update = await this.$http.$put(
+        "http://localhost:5001/scraper/update",
+        {
+          body: {
+            scraper: this.scraper,
+          },
+        }
+      );
+      this.add = false;
+      this.webScraps();
+    },
   },
 };
 </script>

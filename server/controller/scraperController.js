@@ -4,7 +4,7 @@ import connection from "../configure/index.js";
 export class scrapConteroller {
 
   static getscrapedData(req, res) {
-    connection.query("SELECT * FROM  scrapeddata WHERE scrapeddata.status=created", (err, result) => {
+    connection.query(`SELECT * FROM  scrapeddata WHERE scrapeddata.status='create'`, (err, result) => {
       if (err) {
         console.log("error");
         return res.send("something error ");
@@ -21,10 +21,13 @@ export class scrapConteroller {
     console.log("Received data:", req.body);
 
     try {
-      const data = await scrape(scrapedData.url);
+     
+        const data = await this.scrape(scrapedData.url);
       if (data.success) {
-        scrapedData.scrapedData = data.data;
+        scrapedData.scrapeditem = data.data;
       }
+      scrapedData.scrapeditem=JSON.stringify(scrapedData.scrapedData)
+    
 
       console.log("Scraped Data:", scrapedData);
 
@@ -50,12 +53,15 @@ export class scrapConteroller {
 
     try {
       // Optionally scrape new data if needed
-      // const data = await this.scrape(scrapedData.url);
-      // if (data.success) {
-      //   scrapedData.scrapedData = data.data;
-      // }
+    if(scrapedData.status!='deleted'){
+        const data = await this.scrape(scrapedData.url);
+      if (data.success) {
+        scrapedData.scrapedData = data.data;
+      }
+      scrapedData.scrapedData=JSON.stringify(scrapedData.scrapedData)
+    }
 
-      connection.query(`UPDATE scrapeddata SET ? WHERE id = ${scrapedData.id}`, [scrapedData], (err, result) => {
+      connection.query(`UPDATE scrapeddata SET ? WHERE scrapedId  = ${scrapedData.scrapedId}`, [scrapedData], (err, result) => {
         if (err) {
           console.log("Error:", err);
           return res.send("Something went wrong");
@@ -71,9 +77,7 @@ export class scrapConteroller {
     }
   }
 
- 
-}
- async function scrape(url) {
+  static async  scrape(url) {
      try {
     const browser = await puppeteer.launch({
       headless: true,
@@ -99,16 +103,18 @@ export class scrapConteroller {
       // Add more data if needed
     };
 
-    // Store data in the database
-
-
-    // Close browser
+  
     await browser.close();
 
     // Send the scraped data as the response
-    res.json(scrapedData);
+    res.json({
+      success:true,
+      data:scrapedData
+    });
   } catch (error) {
     console.error('Puppeteer error:', error);
     res.status(500).json({ error: 'Scraping failed' });
   }
   }
+}
+

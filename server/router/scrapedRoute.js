@@ -7,6 +7,7 @@ console.log("dsfhks");
 router.get("/", (req, res) => {
   res.send("Hello, World from the Router!");
 });
+router.get("/get", scrapConteroller.getscrapedData);
 router.post("/submit",scrapConteroller.createNewScrap)
 router.put("/update",scrapConteroller.updateScrap)
 export default router;
