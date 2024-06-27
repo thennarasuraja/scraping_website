@@ -4,7 +4,7 @@ import connection from "../configure/index.js";
 export class scrapConteroller {
 
   static getscrapedData(req, res) {
-    connection.query("SELECT * FROM `scrapeddata`", (err, result) => {
+    connection.query("SELECT * FROM  scrapeddata WHERE scrapeddata.status=created", (err, result) => {
       if (err) {
         console.log("error");
         return res.send("something error ");
@@ -74,33 +74,41 @@ export class scrapConteroller {
  
 }
  async function scrape(url) {
-    if (!url) {
-      return {
-        success: false,
-        message: 'URL is required'
-      };
-    }
+     try {
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    try {
-      const browser = await puppeteer.launch({ headless: true, timeout: 150000 });
-      const page = await browser.newPage();
-      await page.goto(url, { waitUntil: 'networkidle2', timeout: 60 0000 });
+    // Wait for the page to load
+    await page.waitForSelector('body');
 
-      const data = await page.evaluate(() => {
-        return document.title; // Example: scraping the title of the page
-      });
+    // Extract the entire HTML content
+    const content = await page.content();
 
-      await browser.close();
+    // Optionally, you can extract more specific data here if needed
+    // Example: Extract the title
+    const title = await page.$eval('title', element => element.textContent);
 
-      return {
-        success: true,
-        data
-      };
-    } catch (error) {
-      console.log(error)
-      return {
-        success: false,
-        message: error.message
-      };
-    }
+    // You can add more scraping logic to get additional data
+    const scrapedData = {
+      content,
+      title,
+      // Add more data if needed
+    };
+
+    // Store data in the database
+
+
+    // Close browser
+    await browser.close();
+
+    // Send the scraped data as the response
+    res.json(scrapedData);
+  } catch (error) {
+    console.error('Puppeteer error:', error);
+    res.status(500).json({ error: 'Scraping failed' });
+  }
   }

@@ -8,5 +8,5 @@ router.get("/", (req, res) => {
   res.send("Hello, World from the Router!");
 });
 router.post("/submit",scrapConteroller.createNewScrap)
-
+router.put("/update",scrapConteroller.updateScrap)
 export default router;
