@@ -22,7 +22,7 @@ export class scrapConteroller {
 
     try {
      
-        const data = await this.scrape(scrapedData.url);
+        const data = await scrape(scrapedData.url);
       if (data.success) {
         scrapedData.scrapeditem = data.data;
       }
@@ -52,9 +52,9 @@ export class scrapConteroller {
     console.log("Received data:", req.body);
 
     try {
-      // Optionally scrape new data if needed
+      
     if(scrapedData.status!='deleted'){
-        const data = await this.scrape(scrapedData.url);
+        const data = await scrape(scrapedData.url);
       if (data.success) {
         scrapedData.scrapedData = data.data;
       }
@@ -77,7 +77,9 @@ export class scrapConteroller {
     }
   }
 
-  static async  scrape(url) {
+ 
+}
+  async function  scrape(url) {
      try {
     const browser = await puppeteer.launch({
       headless: true,
@@ -86,35 +88,31 @@ export class scrapConteroller {
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Wait for the page to load
+   
     await page.waitForSelector('body');
 
-    // Extract the entire HTML content
     const content = await page.content();
 
-    // Optionally, you can extract more specific data here if needed
-    // Example: Extract the title
+
     const title = await page.$eval('title', element => element.textContent);
 
-    // You can add more scraping logic to get additional data
     const scrapedData = {
       content,
       title,
-      // Add more data if needed
+      
     };
 
   
     await browser.close();
 
-    // Send the scraped data as the response
-    res.json({
+    
+    return {
       success:true,
       data:scrapedData
-    });
+    }
   } catch (error) {
     console.error('Puppeteer error:', error);
     res.status(500).json({ error: 'Scraping failed' });
   }
   }
-}
 
