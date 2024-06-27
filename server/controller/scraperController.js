@@ -7,7 +7,10 @@ export class scrapConteroller {
     connection.query(`SELECT * FROM  scrapeddata WHERE scrapeddata.status='create'`, (err, result) => {
       if (err) {
         console.log("error");
-        return res.send("something error ");
+       return res.json({
+          success: false,
+         
+        });
       }
       return res.json({
         success: true,
@@ -34,7 +37,10 @@ export class scrapConteroller {
       connection.query("INSERT INTO `scrapeddata` SET ?", [scrapedData], (err, result) => {
         if (err) {
           console.log("Error:", err);
-          return res.send("Something went wrong");
+          return res.json({
+          success: false,
+         
+        });
         }
         return res.json({
           success: true,
@@ -64,7 +70,10 @@ export class scrapConteroller {
       connection.query(`UPDATE scrapeddata SET ? WHERE scrapedId  = ${scrapedData.scrapedId}`, [scrapedData], (err, result) => {
         if (err) {
           console.log("Error:", err);
-          return res.send("Something went wrong");
+           return res.json({
+          success: false,
+         
+        });
         }
         return res.json({
           success: true,
