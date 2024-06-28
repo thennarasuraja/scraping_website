@@ -10,7 +10,7 @@
         <NuxtLink to="scrap">
           <div class="flex justify-center">
             <button
-              class="p-2 bg-blue-600 font-semibold rounded-[6px] text-[24px] focus:scale-90 hover:scale-110 w-[100px]"
+              class="p-2 bg-blue-600 font-semibold rounded-[6px] text-[24px] focus:scale-90 w-[100px]"
             >
               Click
             </button>

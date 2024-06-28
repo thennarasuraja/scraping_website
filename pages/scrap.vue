@@ -94,15 +94,15 @@ export default {
         url: "",
       },
       webscraps: [
-        {
-          url: "https://www.hackerrank.com/",
-        },
-        {
-          url: "https://www.hackerrank.com/",
-        },
-        {
-          url: "https://www.hackerrank.com/",
-        },
+        // {
+        //   url: "https://www.hackerrank.com/",
+        // },
+        // {
+        //   url: "https://www.hackerrank.com/",
+        // },
+        // {
+        //   url: "https://www.hackerrank.com/",
+        // },
       ],
     };
   },

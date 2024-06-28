@@ -110,9 +110,7 @@ export class scrapConteroller {
       title,
       
     };
-
-  
-    await browser.close();
+     await browser.close();
 
     
     return {
