@@ -10,11 +10,7 @@ RUN THE PROJECT
 front end - pnpm dev
 back end - pnpm server:dev
 
-
-
-
-
-
+________________________------------------------------------------------__________________________________________________
 
 Introduction
 Project Name: Nuxt 3 Web Scraping Tool

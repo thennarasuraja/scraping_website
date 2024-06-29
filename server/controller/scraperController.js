@@ -62,9 +62,9 @@ export class scrapConteroller {
     if(scrapedData.status!='deleted'){
         const data = await scrape(scrapedData.url);
       if (data.success) {
-        scrapedData.scrapedData = data.data;
+        scrapedData.scrapeditem = data.data;
       }
-      scrapedData.scrapedData=JSON.stringify(scrapedData.scrapedData)
+      scrapedData.scrapeditem=JSON.stringify(scrapedData.scrapeditem)
     }
 
       connection.query(`UPDATE scrapeddata SET ? WHERE scrapedId  = ${scrapedData.scrapedId}`, [scrapedData], (err, result) => {
