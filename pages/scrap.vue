@@ -134,6 +134,7 @@ export default {
       this.add = true;
     },
     openUpdate(item) {
+      console.log(item);
       this.scraper = item;
       this.add = true;
     },
@@ -143,11 +144,19 @@ export default {
       this.updateScrap();
     },
     async updateScrap() {
+      const item= {
+              url: this.scraper.url,
+
+              scrapedId: this.scraper.scrapedId,
+            }
+            if(this.scraper.status){
+              item.status=this.scraper.status
+            }
       const update = await this.$http.$put(
         "http://localhost:5001/scraper/update",
         {
           body: {
-            scraper: this.scraper,
+            scraper:item
           },
         }
       );
