@@ -83,6 +83,17 @@
         </div>
       </div>
     </div>
+    <div class="flex" >
+  <!-- Previous Button -->
+  <a href="#" @click="getPrevious(offset)" class="flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+    Previous
+  </a>
+
+  <!-- Next Button -->
+  <a href="#" @click="getNext(offset)" class="flex items-center justify-center px-3 h-8 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+    Next
+  </a>
+</div>
   </div>
 </template>
 <script>
@@ -93,6 +104,7 @@ export default {
       scraper: {
         url: "",
       },
+      offset:0,
       webscraps: [
         // {
         //   url: "https://www.hackerrank.com/",
@@ -111,7 +123,7 @@ export default {
   },
   methods: {
     async webScraps() {
-      const data = await this.$http.$get(`http://localhost:5001/scraper/get`);
+      const data = await this.$http.$get(`http://localhost:5001/scraper/get?offset=${this.offset}`);
       if (data.success) {
         this.webscraps = data.data;
       }
@@ -132,6 +144,25 @@ export default {
         url: "",
       };
       this.add = true;
+    },
+    getPrevious(){
+      if(this.offset<=0) {
+        this.offset=0
+       return
+       
+      } 
+      else{
+  this.offset=this.offset-1
+   this.webScraps()
+    }
+    },
+    getNext(){
+     
+     
+        this.offset=this.offset+1
+        this.webScraps()
+
+      
     },
     openUpdate(item) {
       console.log(item);

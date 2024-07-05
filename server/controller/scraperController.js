@@ -4,7 +4,9 @@ import connection from "../configure/index.js";
 export class scrapConteroller {
 
   static getscrapedData(req, res) {
-    connection.query(`SELECT * FROM  scrapeddata WHERE scrapeddata.status='created'`, (err, result) => {
+    const offset=Number(req.query.offset)*10 ||0
+
+    connection.query(`SELECT * FROM  scrapeddata WHERE scrapeddata.status='created' LIMIT ${offset},10 `, (err, result) => {
       if (err) {
         console.log("error");
        return res.json({
@@ -28,7 +30,9 @@ export class scrapConteroller {
         const data = await scrape(scrapedData.url);
         console.log("datasuccess",data.success)
       if (data.success) {
+        console.log("kjk",data.data)
         scrapedData.scrapeditem = data.data;
+        console.log(scrapedData)
       }
       scrapedData.scrapeditem=JSON.stringify(scrapedData.scrapeditem)
     
